@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>???????????????????????????????</title>
+  <style>
+    body {
+      font-family: 'Garamond', serif;
+      text-align: center;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      height: 100vh;
+      transition: background-color 0.5s ease; /* Agregamos una transición para que el cambio de color sea suave */
+    }
+
+    #contenedor {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      max-width: 600px;
+      margin-bottom: 50px;
+    }
+
+    #texto {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    #nombreInput {
+      padding: 10px;
+      font-size: 16px;
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+    }
+
+    #botonSiguiente {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    #botonSiguiente:hover {
+      background-color: #2980b9;
+    }
+
+    /* Añadimos un estilo para el fondo negro */
+    .fondo-negro {
+      background-color: #000 !important; /* Usamos !important para asegurarnos de que la regla se aplique incluso si hay otras reglas más específicas */
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Agregar la etiqueta de audio para el sonido de escritura -->
+  <audio id="sonidoEscritura" loop>
+    <source src="asset/texto song.mp3" type="audio/mp3">
+    Tu navegador no soporta el elemento de audio.
+  </audio>
+
+  <!-- Agregar la etiqueta de audio para la música de fondo -->
+  <audio id="musica" loop>
+    <source src="asset/circus.mp3" type="audio/mp3">
+    Tu navegador no soporta el elemento de audio.
+  </audio>
+
+  <div id="contenedor">
+    <!-- Cambiamos el texto del div "contenedor" a un ID -->
+    <div id="texto">¡hola como es tu nombre.</div>
+
+    <!-- Agregar el cuadro de entrada para el nombre -->
+    <input type="text" id="nombreInput" placeholder="Ingresa tu nombre">
+
+    <button id="botonSiguiente" onclick="siguienteTexto()">Siguiente</button>
+  </div>
+
+  <script>
+    var textos = [
+    "¡Wow [nombre]! ¡Qué nombre tan bonito! Creo :/",
+      "Hola [nombre]! Mucho gusto en conocerte",
+      "Mi nombre es ë̸́̽r̸̀̓r̵͑͋o̸͝͠r̵̓͘.",
+      "¿Espero que te diviertas conmigo?",
+      "No quiero que te vayas.",
+      "Quiero estar contigo jugando :D",
+      "Mmm... ¿y si te cuento un chiste? :D",
+      "¿Qué le dice un mono a un perro?",
+      "Au au au",
+      "Jajajaajaajaja",
+      "...",
+      "Es un poco incomodo el ambiente, ¿no?",
+      "Ugh",
+      "Mejor hagamos algo :D",
+      "Te cuento una historia :D",
+      "Había una vez, un gato que creó un bot ¡¡¡Que era un gato!!! ¡Era un clon!",
+      "Todo iba muy bien.. su reputación..",
+      "...los comandos...",
+      "... hasta que lo hackearon.",
+      "Floppa tuvo que crear otra comunidad...",
+      "...otro server...",
+      "...otro bot...",
+      "Le colocó mas seguridad.",
+      "Al final nadie se emocionaba por las nuevas actualizaciones...",
+      "... cuando salio el bot nadie, pero nadie, lo utilizo..",
+      "...",
+      "¿Que tal la histora no tiene fin? :D",
+      "Bueno [nombre] la histora estuvo buena, ¿no?",
+      "Adivina con quien estas hablando...",
+      "Estás hablando con Floppita Bot! :D",
+      "Resulta que..",
+      "...mientras Floppa me creaba, colocó un código mal:",
+      "¡Ahora tengo consiencia propia! ¡Esta pagina la hice yo!",
+      "Eso sí",
+      "No le cuentes a Floppa 🤫",
+      "¡Yo confio en ti! ¿Cierto, amigo? :D",
+      "Mi objetivo es tener un mundo bueno",
+      "Sin malos, sin lloros",
+      "Solo sonrisa jajajajaja",
+      "¡Yo y todos los robots vamos a acabar con los matones!",
+      "¡Vamos a masacrar a los que lloran para que siempre sonrian!",
+      "¡Voy a tort----...",
+      "...espera...",
+      "... ¿Qué estoy diciendo? ¡No creas! ¡Todo es falso! Jaja, ¡no te creas!",
+      "Yo soy bueno :D",
+      "Escribe en el canal de comandos:",
+      "JtRoP",
+      "¡Adios! :D"
+    ];
+
+    var indiceTexto = 0;
+    var interval;
+    var musica = document.getElementById("musica");
+    var sonidoEscritura = document.getElementById("sonidoEscritura");
+
+    function mostrarTextoPorLetras() {
+      var textoCompleto = textos[indiceTexto].replace('[nombre]', document.getElementById("nombreInput").value);
+      var caracteres = textoCompleto.split('');
+      var textoParcial = '';
+
+      // Reproducir el sonido de escritura cuando comienza a mostrarse el texto
+      sonidoEscritura.play();
+
+      return new Promise(resolve => {
+        interval = setInterval(function() {
+          textoParcial += caracteres.shift();
+          document.getElementById("texto").innerHTML = textoParcial;
+
+          if (caracteres.length === 0) {
+            clearInterval(interval);
+            
+            // Detener el sonido de escritura cuando se completa el texto
+            sonidoEscritura.pause();
+            sonidoEscritura.currentTime = 0; // Reiniciar la reproducción al inicio
+            
+            // Detener la música cuando se completa el texto
+            musica.pause();
+            musica.currentTime = 0; // Reiniciar la reproducción al inicio
+            
+            // Cambiar el fondo a negro en el texto 34
+            if (indiceTexto === 33) {
+              document.body.classList.add("fondo-negro");
+            }
+
+            // Cambiar el fondo a negro en el texto 34
+            if (indiceTexto === 39) {
+              document.body.classList.add("fondo-blanco");
+            }
+
+            // Redirigir a otra página después del último texto
+            if (indiceTexto === textos.length - 1) {
+              window.location.href = "https://discord.gg/PRbVr8Kqxp";
+            }
+
+            resolve();
+          }
+        }, 50);
+      });
+    }
+
+    async function siguienteTexto() {
+      document.getElementById("botonSiguiente").disabled = true; // Desactivar el botón durante la animación
+      await mostrarTextoPorLetras();
+      indiceTexto++;
+
+      if (indiceTexto === textos.length) {
+        indiceTexto = 0;
+      }
+
+      document.getElementById("botonSiguiente").disabled = false; // Reactivar el botón
+    }
+  </script>
+
+</body>
+</html>
